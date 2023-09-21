@@ -53,7 +53,7 @@ def api_list_presentations(request, conference_id):
     }
     """
     if request.method == "GET":
-        presentation = Presentation.objects.all()
+        presentation = Presentation.objects.get(id=conference_id)
         return JsonResponse(
             presentation,
             encoder=PresentationListEncoder,
@@ -62,7 +62,7 @@ def api_list_presentations(request, conference_id):
     else:
         content = json.loads(request.body)
         try:
-            conference = Conference.objects.get(id=conference_id)
+            conference = Conference.objects.get(id=content["conference"])
             content["conference"] = conference
         except Conference.DoesNotExist:
             return JsonResponse(
